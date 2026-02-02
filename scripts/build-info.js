@@ -6,13 +6,10 @@
  * Contains: version, buildNumber, buildDate, gitCommit, gitBranch
  */
 
-import { execSync } from 'child_process';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+const { execSync } = require('child_process');
+const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+const { join } = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
 // Helper to execute git commands safely
@@ -92,7 +89,7 @@ function generateBuildInfo() {
 }
 
 // Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   try {
     generateBuildInfo();
     process.exit(0);
@@ -102,4 +99,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
 }
 
-export { generateBuildInfo };
+module.exports = { generateBuildInfo };
